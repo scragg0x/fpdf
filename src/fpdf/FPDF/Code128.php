@@ -1,7 +1,7 @@
 <?php
 
 /*******************************************************************************
-* Script :  PDF_Code128
+* Script :  Code128
 * Version : 1.0
 * Date :    20/05/2008
 * Auteur :  Roland Gautier
@@ -18,22 +18,22 @@
 
 namespace fpdf;
 
-class PDF_Code128 extends FPDF {
+class FPDF_Code128 extends FPDF {
 
-var $T128;                                             // tableau des codes 128
-var $ABCset="";                                        // jeu des caractères éligibles au C128
-var $Aset="";                                          // Set A du jeu des caractères éligibles
-var $Bset="";                                          // Set B du jeu des caractères éligibles
-var $Cset="";                                          // Set C du jeu des caractères éligibles
-var $SetFrom;                                          // Convertisseur source des jeux vers le tableau
-var $SetTo;                                            // Convertisseur destination des jeux vers le tableau
-var $JStart = array("A"=>103, "B"=>104, "C"=>105);     // Caractères de sélection de jeu au début du C128
-var $JSwap = array("A"=>101, "B"=>100, "C"=>99);       // Caractères de changement de jeu
+private $T128;                                             // tableau des codes 128
+private $ABCset="";                                        // jeu des caractères éligibles au C128
+private $Aset="";                                          // Set A du jeu des caractères éligibles
+private $Bset="";                                          // Set B du jeu des caractères éligibles
+private $Cset="";                                          // Set C du jeu des caractères éligibles
+private $SetFrom;                                          // Convertisseur source des jeux vers le tableau
+private $SetTo;                                            // Convertisseur destination des jeux vers le tableau
+private $JStart = array("A"=>103, "B"=>104, "C"=>105);     // Caractères de sélection de jeu au début du C128
+private $JSwap = array("A"=>101, "B"=>100, "C"=>99);       // Caractères de changement de jeu
 
 //____________________________ Extension du constructeur _______________________
-function PDF_Code128($orientation='P', $unit='mm', $format='A4') {
+function __construct($orientation='P', $unit='mm', $format='A4') {
 
-	parent::FPDF($orientation,$unit,$format);
+	parent::__construct($orientation,$unit,$format);
 
 	$this->T128[] = array(2, 1, 2, 2, 2, 2);           //0 : [ ]               // composition des caractères
 	$this->T128[] = array(2, 2, 2, 1, 2, 2);           //1 : [!]
