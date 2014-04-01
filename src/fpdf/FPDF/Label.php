@@ -64,7 +64,7 @@ class FPDF_Label extends FPDF {
         '5163' => array('paper-size'=>'letter',    'metric'=>'mm',    'marginLeft'=>1.762,    'marginTop'=>10.7,         'NX'=>2,    'NY'=>5,    'SpaceX'=>3.175,    'SpaceY'=>0,    'width'=>101.6,        'height'=>50.8,        'font-size'=>8),
         '5164' => array('paper-size'=>'letter',    'metric'=>'in',    'marginLeft'=>0.148,    'marginTop'=>0.5,         'NX'=>2,    'NY'=>3,    'SpaceX'=>0.2031,    'SpaceY'=>0,    'width'=>4.0,        'height'=>3.33,        'font-size'=>12),
         '8600' => array('paper-size'=>'letter',    'metric'=>'mm',    'marginLeft'=>7.1,         'marginTop'=>19,         'NX'=>3,     'NY'=>10,     'SpaceX'=>9.5,         'SpaceY'=>3.1,     'width'=>66.6,         'height'=>25.4,        'font-size'=>8),
-        'L7163'=> array('paper-size'=>'A4',        'metric'=>'mm',    'marginLeft'=>5,        'marginTop'=>15,         'NX'=>2,    'NY'=>7,    'SpaceX'=>25,        'SpaceY'=>0,    'width'=>99.1,        'height'=>38.1,        'font-size'=>9),
+        'L7163'=> array('paper-size'=>'A4',        'metric'=>'mm',    'marginLeft'=>5,        'marginTop'=>15,         'NX'=>2,    'NY'=>7,    'SpaceX'=>3,        'SpaceY'=>0,    'width'=>99.1,        'height'=>38.1,        'font-size'=>9),
         '3422' => array('paper-size'=>'A4',        'metric'=>'mm',    'marginLeft'=>0,        'marginTop'=>8.5,         'NX'=>3,    'NY'=>8,    'SpaceX'=>0,        'SpaceY'=>0,    'width'=>70,        'height'=>35,        'font-size'=>9)
     );
 
@@ -149,6 +149,28 @@ class FPDF_Label extends FPDF {
         $_PosY = $this->_Margin_Top + $this->_COUNTY*($this->_Height+$this->_Y_Space) + $this->_Padding;
         $this->SetXY($_PosX, $_PosY);
         $this->MultiCell($this->_Width - $this->_Padding, $this->_Line_Height, $text, 0, 'L');
+    }
+    
+    // Print a label with BarCode128
+    public function Add_LabelCode128($code, $w, $h, $text) {
+    	$this->_COUNTX++;
+    	if ($this->_COUNTX == $this->_X_Number) {
+    		// Row full, we start a new one
+    		$this->_COUNTX=0;
+    		$this->_COUNTY++;
+    		if ($this->_COUNTY == $this->_Y_Number) {
+    			// End of page reached, we start a new one
+    			$this->_COUNTY=0;
+    			$this->AddPage();
+    		}
+    	}
+    
+    	$_PosX = $this->_Margin_Left + $this->_COUNTX*($this->_Width+$this->_X_Space) + $this->_Padding;
+    	$_PosY = $this->_Margin_Top + $this->_COUNTY*($this->_Height+$this->_Y_Space) + $this->_Padding;
+
+    	$this->Code128($_PosX, $_PosY, $code, $w, $h);
+    	$this->SetXY($_PosX, $_PosY + 3 );
+    	$this->MultiCell($this->_Width - $this->_Padding, $this->_Line_Height, $text, 0, 'L');
     }
 
     private function _putcatalog()
