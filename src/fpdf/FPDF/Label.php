@@ -39,7 +39,7 @@
 
 namespace fpdf;
 
-class FPDF_Label extends FPDF {
+class FPDF_Label extends FPDF_Code128 {
 
     // Private properties
     private $_Margin_Left;            // Left margin of labels
@@ -173,7 +173,7 @@ class FPDF_Label extends FPDF {
     	$this->MultiCell($this->_Width - $this->_Padding, $this->_Line_Height, $text, 0, 'L');
     }
 
-    private function _putcatalog()
+    public function _putcatalog()
     {
         parent::_putcatalog();
         // Disable the page scaling option in the printing dialog
