@@ -16,7 +16,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
+namespace fpdf;
 /**
  * Class pdf_parser
  */

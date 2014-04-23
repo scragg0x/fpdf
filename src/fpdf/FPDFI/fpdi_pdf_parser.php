@@ -16,8 +16,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
-require_once('pdf_parser.php');
+namespace fpdf;
+//require_once('pdf_parser.php');
 
 /**
  * Class fpdi_pdf_parser

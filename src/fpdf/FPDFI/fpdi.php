@@ -16,8 +16,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
-require_once('fpdf_tpl.php');
+namespace fpdf;
+//require_once('fpdf_tpl.php');
 
 /**
  * Class FPDI
