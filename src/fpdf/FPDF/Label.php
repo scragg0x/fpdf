@@ -126,13 +126,13 @@ class FPDF_Label extends FPDF_Code128 {
 
     // Set the character size
     // This changes the line height too
-    private function Set_Font_Size($pt) {
+    public function Set_Font_Size($pt) {
         $this->_Line_Height = $this->_Get_Height_Chars($pt);
         $this->SetFontSize($pt);
     }
 
     // Print a label
-    public function Add_Label($text) {
+    public function Add_Label($text, $align = 'L') {
         $this->_COUNTX++;
         if ($this->_COUNTX == $this->_X_Number) {
             // Row full, we start a new one
@@ -148,11 +148,11 @@ class FPDF_Label extends FPDF_Code128 {
         $_PosX = $this->_Margin_Left + $this->_COUNTX*($this->_Width+$this->_X_Space) + $this->_Padding;
         $_PosY = $this->_Margin_Top + $this->_COUNTY*($this->_Height+$this->_Y_Space) + $this->_Padding;
         $this->SetXY($_PosX, $_PosY);
-        $this->MultiCell($this->_Width - $this->_Padding, $this->_Line_Height, $text, 0, 'L');
+        $this->MultiCell($this->_Width - ( 2 * $this->_Padding ), $this->_Line_Height, $text, 0, $align);
     }
     
     // Print a label with BarCode128
-    public function Add_LabelCode128($code, $w, $h, $text) {
+    public function Add_LabelCode128($code, $w, $h, $text, $img = array()) {
     	$this->_COUNTX++;
     	if ($this->_COUNTX == $this->_X_Number) {
     		// Row full, we start a new one
@@ -164,13 +164,30 @@ class FPDF_Label extends FPDF_Code128 {
     			$this->AddPage();
     		}
     	}
-    
+    	
     	$_PosX = $this->_Margin_Left + $this->_COUNTX*($this->_Width+$this->_X_Space) + $this->_Padding;
     	$_PosY = $this->_Margin_Top + $this->_COUNTY*($this->_Height+$this->_Y_Space) + $this->_Padding;
 
-    	$this->Code128($_PosX, $_PosY, $code, $w, $h);
-    	$this->SetXY($_PosX, $_PosY + 3 );
-    	$this->MultiCell($this->_Width - $this->_Padding, $this->_Line_Height, $text, 0, 'L');
+    	//Place bar code at Botom of Label
+    	$this->Code128(
+    			$_PosX, 
+    			$_PosY + $this->_Height - $h - ( 2 * $this->_Padding ) , 
+    			$code, $this->_Width - ( 2 * $this->_Padding ) , 
+    			$h
+    	);
+    	
+    	if($img){
+    		$this->Image(
+    				$img['src'], 
+    				$_PosX + $this->_Width - ( 2 * $this->_Padding ) - $img['w'], 
+    				$_PosY + $this->_Height - $h - ( 2 * $this->_Padding ) - $img['h'], 
+    				$img['w'], 
+    				$img['h']
+    		);
+    	}
+    	
+    	$this->SetXY($_PosX, $_PosY);
+    	$this->MultiCell($this->_Width - ( 2 * $this->_Padding ), $this->_Line_Height, $text, 0, 'L');
     }
 
     public function _putcatalog()
