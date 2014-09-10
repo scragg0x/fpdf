@@ -1785,8 +1785,11 @@ function _enddoc()
 	$this->_out('xref');
 	$this->_out('0 '.($this->n+1));
 	$this->_out('0000000000 65535 f ');
-	for($i=1;$i<=$this->n;$i++)
-		$this->_out(sprintf('%010d 00000 n ',$this->offsets[$i]));
+	for($i=1;$i<=$this->n;$i++){
+	    if(isset($this->offsets[$i])){
+	    	$this->_out(sprintf('%010d 00000 n ',$this->offsets[$i]));
+	    }
+	}
 	// Trailer
 	$this->_out('trailer');
 	$this->_out('<<');
